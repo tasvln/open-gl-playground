@@ -1,4 +1,10 @@
-#define GLFW_INCLUDE_GLCOREARB
+// #define GLFW_INCLUDE_GLCOREARB
+// #include <GLFW/glfw3.h>
+// #include <iostream>
+
+#define GLAD_GL_IMPLEMENTATION
+#include "glad/glad.h"
+// #define GLFW_INCLUDE_GLCOREARB
 #include <GLFW/glfw3.h>
 #include <iostream>
 

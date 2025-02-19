@@ -17,6 +17,10 @@ int main(int argc, char *argv[])
     return -1;
   }
 
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
   window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "playground", NULL, NULL);
 
   if (!window)
@@ -28,8 +32,15 @@ int main(int argc, char *argv[])
 
   glfwMakeContextCurrent(window);
 
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+  {
+    std::cerr << "Failed to initialize GLAD\n";
+    return -1;
+  }
+
   while (!glfwWindowShouldClose(window))
   {
+    glClear(GL_COLOR_BUFFER_BIT);
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
