@@ -13,15 +13,8 @@ void processInput(GLFWwindow *window)
   }
 }
 
-void clear()
+void deleteShaders()
 {
-  if (window)
-  {
-    glfwDestroyWindow(window);
-  }
-  glDeleteVertexArrays(1, &VAO);
-  glDeleteBuffers(1, &VBO);
-
   if (vertexShader)
   {
     glDeleteShader(vertexShader);
@@ -30,7 +23,16 @@ void clear()
   {
     glDeleteShader(fragShader);
   }
+}
 
+void clear()
+{
+  if (window)
+  {
+    glfwDestroyWindow(window);
+  }
+  glDeleteVertexArrays(1, &VAO);
+  glDeleteBuffers(1, &VBO);
   glDeleteProgram(shaderProgram);
   glfwTerminate();
 }
@@ -81,6 +83,7 @@ int main(int argc, char *argv[])
   // shaders
   vertexShader = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+
   glCompileShader(vertexShader);
 
   // debugging shader compilation
@@ -95,6 +98,7 @@ int main(int argc, char *argv[])
 
   fragShader = glCreateShader(GL_FRAGMENT_SHADER);
   glShaderSource(fragShader, 1, &fragShaderSource, NULL);
+
   glCompileShader(fragShader);
 
   // shader program to link both shaders
@@ -112,15 +116,28 @@ int main(int argc, char *argv[])
   //             << infoLog << std::endl;
   // }
 
+  deleteShaders();
+
+  // interpreting the vertex
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+  glEnableVertexAttribArray(0);
+
   while (!glfwWindowShouldClose(window))
   {
+    glfwPollEvents();
+
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     processInput(window);
 
+    glUseProgram(shaderProgram);
+    glBindVertexArray(VAO);
+
+    // draw triangle
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
     glfwSwapBuffers(window);
-    glfwPollEvents();
   }
 
   clear();
