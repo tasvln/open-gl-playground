@@ -18,6 +18,7 @@ const int WINDOW_HEIGHT = 600;
 GLFWwindow *window;
 
 unsigned int VBO;
+unsigned int EBO;
 unsigned int VAO;
 
 unsigned int vertexShader;
@@ -29,9 +30,13 @@ unsigned int shaderProgram;
 // char infoLog[512];
 
 float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-    0.5f, -0.5f, 0.0f,
-    0.0f, 0.5f, 0.0f};
+    0.5f, 0.5f, 0.0f,   // top right
+    0.5f, -0.5f, 0.0f,  // bottom right
+    -0.5f, -0.5f, 0.0f, // bottom left
+    -0.5f, 0.5f, 0.0f   // top left
+};
+
+unsigned int indices[] = {0, 1, 3, 1, 2, 3};
 
 const char *vertexShaderSource = "#version 330 core\n"
                                  "layout (location = 0) in vec3 aPos;\n"
@@ -43,7 +48,7 @@ const char *vertexShaderSource = "#version 330 core\n"
 const char *fragShaderSource = "#version 410 core\n"
                                "out vec4 FragColor;"
                                "void main() {"
-                               "  FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);"
+                               "  FragColor = vec4(1.0f, 1.5f, 0.2f, 1.0f);"
                                "}";
 
 // functions

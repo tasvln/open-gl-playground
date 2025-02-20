@@ -77,6 +77,10 @@ int main(int argc, char *argv[])
   glGenVertexArrays(1, &VAO);
   glBindVertexArray(VAO);
 
+  glGenBuffers(1, &EBO);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
   // glEnableVertexAttribArray(0);
   // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
@@ -132,10 +136,13 @@ int main(int argc, char *argv[])
     processInput(window);
 
     glUseProgram(shaderProgram);
-    glBindVertexArray(VAO);
+    // glBindVertexArray(VAO);
 
     // draw triangle
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    // glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window);
   }
