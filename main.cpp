@@ -21,7 +21,17 @@ void clear()
   }
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
-  // glDeleteProgram(shaderProgram);
+
+  if (vertexShader)
+  {
+    glDeleteShader(vertexShader);
+  }
+  if (fragShader)
+  {
+    glDeleteShader(fragShader);
+  }
+
+  glDeleteProgram(shaderProgram);
   glfwTerminate();
 }
 
@@ -73,13 +83,32 @@ int main(int argc, char *argv[])
   glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
   glCompileShader(vertexShader);
 
-  // checking if the shader has been compiled
+  // debugging shader compilation
   // glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
 
   // if (!success)
   // {
   //   glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
   //   std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"
+  //             << infoLog << std::endl;
+  // }
+
+  fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(fragShader, 1, &fragShaderSource, NULL);
+  glCompileShader(fragShader);
+
+  // shader program to link both shaders
+  shaderProgram = glCreateProgram();
+  glAttachShader(shaderProgram, vertexShader);
+  glAttachShader(shaderProgram, fragShader);
+  glLinkProgram(shaderProgram);
+
+  // debugging shader program
+  // glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+  // if (!success)
+  // {
+  //   glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+  //   std::cout << "ERROR::SHADER::PROGRAM::LINK_FAILED\n"
   //             << infoLog << std::endl;
   // }
 
